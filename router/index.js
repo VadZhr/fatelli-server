@@ -73,7 +73,7 @@ router.get('/contacts/getcontacts',adminController.getContacts)
 // CONTACTS
 
 router.get('/contacts/getsomething',(req,res,next)=>{
-  res.json('12345678)
+  res.json('12345678')
   )
 
 module.exports = router;
