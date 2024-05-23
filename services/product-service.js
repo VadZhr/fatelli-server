@@ -7,7 +7,7 @@ const ApiError = require("../exceptions/api-error");
 class ProductService{
     async addProduct(productData){
         try {
-            console.log(productData);
+        
             const product = await ProductModel.create({
                 ...productData
             })
@@ -19,15 +19,19 @@ class ProductService{
     async deleteProduct(id){
         try {
            const productData = await ProductModel.findById(id);
-           console.log(productData,'deleteProduct');
            const filePath = path.resolve(
             __dirname,
             "..",
             "uploads",
             productData.productMainImage[0]
           );
-
-          fs.unlinkSync(filePath);
+          try {
+            fs.accessSync(filePath, fs.constants.F_OK); 
+            fs.unlinkSync(filePath);
+          } catch (e) {
+            console.log('Такого файла нет '+' deleteProduct');
+          }
+          
           productData.productImagesWhiteBG.forEach(el=>{
             const filePath = path.resolve(
                 __dirname,
@@ -35,7 +39,12 @@ class ProductService{
                 "uploads",
                 el
               );
-              fs.unlinkSync(filePath);
+              try {
+                fs.accessSync(filePath, fs.constants.F_OK); 
+                fs.unlinkSync(filePath);
+              } catch (e) {
+                console.log('Такого файла нет '+' deleteProduct');
+              }
           })
           productData.productImageInterior.forEach(el=>{
             const filePath = path.resolve(
@@ -44,7 +53,12 @@ class ProductService{
                 "uploads",
                 el
               );
-              fs.unlinkSync(filePath);
+              try {
+                fs.accessSync(filePath, fs.constants.F_OK); 
+                fs.unlinkSync(filePath);
+              } catch (e) {
+                console.log('Такого файла нет '+' deleteProduct');
+              }
           })
           productData.productImageColored.forEach(el=>{
             const filePath = path.resolve(
@@ -53,7 +67,12 @@ class ProductService{
                 "uploads",
                 el
               );
-              fs.unlinkSync(filePath);
+              try {
+                fs.accessSync(filePath, fs.constants.F_OK); 
+                fs.unlinkSync(filePath);
+              } catch (e) {
+                console.log('Такого файла нет '+' deleteProduct');
+              }
           })
           productData.productDocuments.forEach(el=>{
             const filePath = path.resolve(
@@ -62,7 +81,26 @@ class ProductService{
                 "files",
                 el
               );
+              try {
+                fs.accessSync(filePath, fs.constants.F_OK); 
+                fs.unlinkSync(filePath);
+              } catch (e) {
+                console.log('Такого файла нет '+' deleteProduct');
+              }
+          })
+          productData.productParamsImage.forEach(el=>{
+            const filePath = path.resolve(
+              __dirname,
+              "..",
+              "files",
+              el
+            );
+            try {
+              fs.accessSync(filePath, fs.constants.F_OK); 
               fs.unlinkSync(filePath);
+            } catch (e) {
+              console.log('Такого файла нет '+' deleteProduct');
+            }
           })
           const data = await ProductModel.deleteOne({_id:id});
             return data
@@ -91,9 +129,16 @@ class ProductService{
                     "uploads",
                     el.productMainImage[0]
                   );
-                  const data = fs.readFileSync(filePath);
-                  const blob = Buffer.from(data.buffer);
-                  el.productMainImage=[{ blob:'data:image/jpeg;base64,  '+blob.toString("base64"), name:el.productMainImage[0]}];
+                  try {
+                    fs.accessSync(filePath, fs.constants.F_OK); 
+                    const data = fs.readFileSync(filePath);
+                    const blob = Buffer.from(data.buffer);
+                    el.productMainImage=[{ blob:'data:image/jpeg;base64,  '+blob.toString("base64"), name:el.productMainImage[0]}];
+                  } catch (e) {
+                    console.error('No Read access'); 
+                  }
+                 
+                  
                   el.productImagesWhiteBG=el.productImagesWhiteBG.map(el=>{
                     const filePath = path.resolve(
                         __dirname,
@@ -112,7 +157,7 @@ class ProductService{
                       } catch (err) { 
                         console.error('No Read access'); 
                       } 
-                    console.log(blob);
+                 
                     if(blob)  return { blob:'data:image/jpeg;base64,'+blob.toString("base64"), name:el}
                     return { blob, name:el}
                     //   const data = fs.readFileSync(filePath);
@@ -137,7 +182,7 @@ class ProductService{
                         } catch (err) { 
                           console.error('No Read access'); 
                         } 
-                      console.log(blob);
+                 
                       if(blob)  return { blob:'data:image/jpeg;base64,'+blob.toString("base64"), name:el}
                       return { blob, name:el}
                     //   const data = fs.readFileSync(filePath);
@@ -162,7 +207,7 @@ class ProductService{
                         } catch (err) { 
                           console.error('No Read access'); 
                         } 
-                      console.log(blob);
+                    
                       if(blob)  return { blob:'data:image/jpeg;base64,'+blob.toString("base64"), name:el}
                       return { blob, name:el}
                     //   const data = fs.readFileSync(filePath);
@@ -176,13 +221,46 @@ class ProductService{
                         "files",
                         el
                       );
-                      const data = fs.readFileSync(filePath);
-                      const blob = Buffer.from(data.buffer);
-                      return { blob:'data:application/pdf;base64,'+blob.toString("base64"), name:el}
+                      let data = null
+                      let blob=null
+                      try { 
+                        fs.accessSync(filePath, fs.constants.F_OK); 
+                        data = fs.readFileSync(filePath);
+                        blob = Buffer.from(data.buffer);
+                    
+
+                      } catch (err) { 
+                        console.error('No Read access'); 
+                      } 
+                      if(blob)  return { blob:'data:application/pdf;base64,'+blob.toString("base64"), name:el}
+                      return { blob, name:el}
+
+                  })
+                  el.productParamsImage=el.productParamsImage.map(el=>{
+                    const filePath = path.resolve(
+                      __dirname,
+                      "..",
+                      "uploads",
+                      el
+                    );
+                    let data = null
+                    let blob=null
+                    try { 
+                        fs.accessSync(filePath, fs.constants.F_OK); 
+                        data = fs.readFileSync(filePath);
+                        blob = Buffer.from(data.buffer);
+                    
+
+                      } catch (err) { 
+                        console.error('No Read access'); 
+                      } 
+                  
+                    if(blob)  return { blob:'data:image/jpeg;base64,'+blob.toString("base64"), name:el}
+                    return { blob, name:el}
                   })
                   return el
             })
-            console.log();
+    
         
         } catch (e) {
             console.log(e,'getAllProducts');
@@ -191,14 +269,16 @@ class ProductService{
     async deleteProductImages(id,imagesToDelete){
         try {
             const productData = await ProductModel.findById(id);
-            console.log(productData,'deleteProductImages');
+
             if(!productData){
                 throw ApiError.BadRequest('Продукт не найден')
             }
+            
             productData.productImagesWhiteBG=productData.productImagesWhiteBG.filter(ele=>!imagesToDelete.includes(ele));
             productData.productImageInterior=productData.productImageInterior.filter(ele=>!imagesToDelete.includes(ele));
             productData.productImageColored=productData.productImageColored.filter(ele=>!imagesToDelete.includes(ele));
             productData.productDocuments=productData.productDocuments.filter(ele=>!imagesToDelete.includes(ele));
+            productData.productParamsImage=productData.productParamsImage.filter(ele=>!imagesToDelete.includes(ele))
             if(imagesToDelete.includes(productData.productMainImage)) productData.productMainImage=''
             imagesToDelete.forEach(el=>{
                     const filePath = path.resolve(
@@ -233,8 +313,7 @@ class ProductService{
 
           
             // productData.productDocuments=productData.productDocuments.filter(ele=>!imagesToDelete.includes(ele));
-           await productData.save()      
-        console.log(productData,' after deleteProductImages');    
+           await productData.save()          
         } catch (e) {
             console.log(e,"deleteProductImages");
         }

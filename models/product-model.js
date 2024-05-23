@@ -16,7 +16,6 @@ const ProductSchema = new Schema({
     productDocuments:{type:Array},
     categoryNameId:{type:ObjectId},
     productParamsImage:{type:Array}
-  
 
 
 })

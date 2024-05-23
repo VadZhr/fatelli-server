@@ -32,8 +32,9 @@ class AdminService{
         }
         const isPassEqual = await bcrypt.compare(password,admin.password);
         if(!isPassEqual){
-            throw ApiError.BadRequest(`Неверный пароль`);
+            return undefined
         }
+      
         const adminDto=new AdminDto(admin);
         const tokens = tokenService.generateTokens({...adminDto});
         await tokenService.saveToken(adminDto.id,tokens.refreshToken);

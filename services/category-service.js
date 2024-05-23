@@ -27,10 +27,22 @@ class CategoryService{
                   el.categoryImagePath
                 );
                 // это надо выучить
-                const data = fs.readFileSync(filePath);
+                let data=null;
+                let blob=null;
+                try {
+                    fs.accessSync(filePath, fs.constants.F_OK); 
+                    data = fs.readFileSync(filePath);
+                    blob = Buffer.from(data.buffer);
+                       
+                } catch (e) {
+                    console.log('Такого файла '+el.categoryImagePath+' нет')
+                }
+                if(blob){
+                    blobArr.push({id:el._id, categoryName: el.categoryName, categoryImagePath:el.categoryImagePath, categoryPath:el.categoryPath, blob:'data:image/jpeg;base64,'+blob.toString("base64") });
+                }
+                     
                   // это надо выучить
-                const blob = Buffer.from(data.buffer);
-                blobArr.push({id:el._id, categoryName: el.categoryName, categoryImagePath:el.categoryImagePath, categoryPath:el.categoryPath, blob:'data:image/jpeg;base64,'+blob.toString("base64") });
+                
               });
             return blobArr
         } catch (e) {

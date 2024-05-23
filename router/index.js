@@ -63,7 +63,7 @@ router.get('/categories/getallcategories', adminController.getAllCategories)
 // PRODUCTS
 router.post('/products/addproduct',  upload.fields([{name:'mainImage', maxCount:1 },{name:'whiteBG'},{name:'interior'},{name:'colored'},{name:'files'},{name:'productParamsImage'}]), adminController.addProduct)
 router.delete('/products/deleteproduct/:id', adminController.deleteProduct)
-router.put('/products/editproduct/:id',upload.fields([{name:'mainImage', maxCount:1 },{name:'whiteBG'},{name:'interior'},{name:'colored'},{name:'files'}]), adminController.editProduct)
+router.put('/products/editproduct/:id',upload.fields([{name:'mainImage', maxCount:1 },{name:'whiteBG'},{name:'interior'},{name:'colored'},{name:'files'},{name:'productParamsImage'}]), adminController.editProduct)
 router.get('/products/getallproducts', adminController.getAllProducts)
 // PRODUCTS
 

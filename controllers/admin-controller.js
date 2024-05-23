@@ -51,19 +51,21 @@ class AdminController {
       const { email, password } = req.body;
       console.log(req.body, "req.body");
       const adminData = await AdminService.login(email, password);
+      if(!adminData) next( ApiError.BadRequest('Неправильный логин или пароль'))
       res.cookie("refreshToken", adminData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
       });
       return res.json(adminData);
     } catch (e) {
+      
       next(e);
     }
   }
   async logout(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
-      const refreshTokenHeader = req.headers.authorization.split(" ")[1];
+      const refreshTokenHeader = req.headers?.authorization?.split(" ")[1];
       const token = await AdminService.logout(
         refreshToken || refreshTokenHeader
       );
@@ -76,7 +78,7 @@ class AdminController {
   async refresh(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
-      const refreshTokenHeader = req.headers.authorization.split(" ")[1];
+      const refreshTokenHeader = req.headers?.authorization?.split(" ")[1];
       const adminData = await AdminService.refresh(
         refreshToken || refreshTokenHeader
       );
@@ -244,9 +246,10 @@ async addAboutData(req,res,next){
         const productImageInterior = req.files.interior.map(el=>el.originalname)
         const productImageColored = req.files.colored.map(el=>el.originalname)
         const productDocuments = req.files.files.map(el=>el.originalname);
+        const productParamsImage = req.files.productParamsImage.map(el=>el.originalname);
         const productMainImage = [req.files.mainImage[0].originalname]
         const product = await ProductService.addProduct({productPath,productImagesWhiteBG,productImageInterior,productImageColored, productDocuments,
-          productName,productDescription,productParams,productRealPrice,productDiscountPrice,categoryNameId, productMainImage}
+          productName,productDescription,productParams,productRealPrice,productDiscountPrice,categoryNameId, productMainImage,productParamsImage}
         )
         res.status(200).json({message:'Продукт добавлен'})
 
@@ -308,6 +311,10 @@ async editProduct(req,res,next){
  if(req.files.files){
   const files = req.files.files.map(el=>el.originalname)
   product.productDocuments.push(...files)
+}
+if(req.files.productParamsImage) {
+  const productParamsImage = req.files.productParamsImage.map(el=>el.originalname)
+  product.productParamsImage=productParamsImage
 }
   await product.save();
 //   console.log(product);
