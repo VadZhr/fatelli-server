@@ -65,7 +65,13 @@ class CategoryService{
             }
             const filePath = path.resolve(__dirname, "..", "uploads", categoryData.categoryImagePath);
             // Это надо выучить
-            fs.unlinkSync(filePath);
+           
+            try {
+                fs.accessSync(filePath, fs.constants.F_OK); 
+                fs.unlinkSync(filePath);
+            } catch (error) {
+                console.log('Такого файла '+el.categoryImagePath+' нет')
+            }
             await CategoriesModel.deleteOne({_id:id});
             return true
         } catch (e) {

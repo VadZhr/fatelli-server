@@ -71,4 +71,9 @@ router.get('/products/getallproducts', adminController.getAllProducts)
 router.put('/contacts/editcontacts',authMiddleware,adminController.editContact)
 router.get('/contacts/getcontacts',adminController.getContacts)
 // CONTACTS
+
+router.get('/contacts/getsomething',(req,res,next)=>{
+  res.json('12345678')
+})
+
 module.exports = router;
