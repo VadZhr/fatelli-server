@@ -78,11 +78,11 @@ class AdminController {
   async refresh(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
-      const refreshTokenHeader = req.headers?.authorization?.split(" ")[1];
+      const refreshTokenHeader = req.headers?.authorization.split(" ")[1];
       const adminData = await AdminService.refresh(
         refreshToken || refreshTokenHeader
       );
-      res.cookie("refreshToken", adminData.refreshToken, {
+      res.cookie("refreshToken", adminData.refreshToken, {  
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
       });
@@ -213,7 +213,13 @@ async addAboutData(req,res,next){
           "uploads",
           category.categoryImagePath
         );
-        fs.unlinkSync(filePath);
+
+        try {
+          fs.accessSync(filePath, fs.constants.F_OK); 
+          fs.unlinkSync(filePath);
+        } catch (e) {
+          console.log('Такого файла нет ' + filePath+' deleteProduct');
+        }
         const newPath = req.file.originalname
         category.categoryImagePath = newPath
       }

@@ -5,6 +5,7 @@ const cookueParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const router = require("./router/index");
 const errorMiddleware = require("./middlewares/error-middleware");
+const path = require('path');
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -18,6 +19,11 @@ app.use(
     credentials: true,
   })
 );  
+// Настроим путь к папке с загрузками
+const uploadsDir = path.join(__dirname, 'uploads');
+
+// Обслуживание статических файлов из папки uploads
+app.use('/uploads', express.static(uploadsDir));
 app.use("/api", router);
 app.use(errorMiddleware);
 

@@ -10,31 +10,32 @@ class AboutService {
       if (aboutData.length == 0) {
         return ApiError.BadRequest('Данных нет');
       }
-      const blobArr = [];
-      aboutData[0].aboutImagePath.forEach((el) => {
-        const filePath = path.resolve(
-          __dirname,
-          "..",
-          "uploads",
-          el
-        );
-        try { 
-          fs.accessSync(filePath, fs.constants.F_OK); 
-          const data = fs.readFileSync(filePath);
-          const blob = Buffer.from(data.buffer);
-          blobArr.push({ name: el, toDisplay:el.toDisplay, blob:'data:image/jpeg;base64,'+blob.toString("base64") });
-        } catch (err) { 
-          console.error('нет такого файла')
+      // const blobArr = [];
+      // aboutData[0].aboutImagePath.forEach((el) => {
+      //   const filePath = path.resolve(
+      //     __dirname,
+      //     "..",
+      //     "uploads",
+      //     el
+      //   );
+      //   try { 
+      //     fs.accessSync(filePath, fs.constants.F_OK); 
+      //     const data = fs.readFileSync(filePath);
+      //     const blob = Buffer.from(data.buffer);
+      //     blobArr.push({ name: el, toDisplay:el.toDisplay, blob:'data:image/jpeg;base64,'+blob.toString("base64") });
+      //   } catch (err) { 
+      //     console.error('нет такого файла')
          
-        } 
+      //   } 
       
        
-      });
-      return {
-        aboutImages: blobArr,
-        aboutTitle: aboutData[0].aboutTitle,
-        aboutText: aboutData[0].aboutText,
-      };
+      // });
+      // return {
+      //   aboutImages: blobArr,
+      //   aboutTitle: aboutData[0].aboutTitle,
+      //   aboutText: aboutData[0].aboutText,
+      // };
+      return aboutData
     } catch (e) {
       console.log(e);
     }

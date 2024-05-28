@@ -29,16 +29,18 @@ class CategoryService{
                 // это надо выучить
                 let data=null;
                 let blob=null;
-                try {
-                    fs.accessSync(filePath, fs.constants.F_OK); 
-                    data = fs.readFileSync(filePath);
-                    blob = Buffer.from(data.buffer);
+                // try {
+                //     fs.accessSync(filePath, fs.constants.F_OK); 
+                //     data = fs.readFileSync(filePath);
+                //     blob = Buffer.from(data.buffer);
                        
-                } catch (e) {
-                    console.log('Такого файла '+el.categoryImagePath+' нет')
-                }
+                // } catch (e) {
+                //     console.log('Такого файла '+el.categoryImagePath+' нет')
+                // }
                 if(blob){
                     blobArr.push({id:el._id, categoryName: el.categoryName, categoryImagePath:el.categoryImagePath, categoryPath:el.categoryPath, blob:'data:image/jpeg;base64,'+blob.toString("base64") });
+                }else{
+                    blobArr.push({id:el._id, categoryName: el.categoryName, categoryImagePath:el.categoryImagePath, categoryPath:el.categoryPath});
                 }
                      
                   // это надо выучить

@@ -123,140 +123,141 @@ class ProductService{
         try {
             const allProducts = await ProductModel.find(); 
             return allProducts.map(el=>{
-                const filePath = path.resolve(
-                    __dirname,
-                    "..",
-                    "uploads",
-                    el.productMainImage[0]
-                  );
-                  try {
-                    fs.accessSync(filePath, fs.constants.F_OK); 
-                    const data = fs.readFileSync(filePath);
-                    const blob = Buffer.from(data.buffer);
-                    el.productMainImage=[{ blob:'data:image/jpeg;base64,  '+blob.toString("base64"), name:el.productMainImage[0]}];
-                  } catch (e) {
-                    console.error('No Read access'); 
-                  }
+                // const filePath = path.resolve(
+                //     __dirname,
+                //     "..",
+                //     "uploads",
+                //     el.productMainImage[0]
+                //   );
+                //   try {
+                //     fs.accessSync(filePath, fs.constants.F_OK); 
+                //     const data = fs.readFileSync(filePath);
+                //     const blob = Buffer.from(data.buffer);
+                //     el.productMainImage=[{ blob:'data:image/jpeg;base64,  '+blob.toString("base64"), name:el.productMainImage[0]}];
+                //   } catch (e) {
+                //     el.productMainImage=[el.productMainImage[0]];
+                //     console.error('No Read access'); 
+                //   }
                  
                   
                   el.productImagesWhiteBG=el.productImagesWhiteBG.map(el=>{
-                    const filePath = path.resolve(
-                        __dirname,
-                        "..",
-                        "uploads",
-                        el
-                      );
-                      let data = null
-                    let blob=null
-                    try { 
-                        fs.accessSync(filePath, fs.constants.F_OK); 
-                        data = fs.readFileSync(filePath);
-                        blob = Buffer.from(data.buffer);
+                    // const filePath = path.resolve(
+                    //     __dirname,
+                    //     "..",
+                    //     "uploads",
+                    //     el
+                    //   );
+                    //   let data = null
+                    // let blob=null
+                    // try { 
+                    //     fs.accessSync(filePath, fs.constants.F_OK); 
+                    //     data = fs.readFileSync(filePath);
+                    //     blob = Buffer.from(data.buffer);
                     
 
-                      } catch (err) { 
-                        console.error('No Read access'); 
-                      } 
+                    //   } catch (err) { 
+                    //     console.error('No Read access'); 
+                    //   } 
                  
-                    if(blob)  return { blob:'data:image/jpeg;base64,'+blob.toString("base64"), name:el}
-                    return { blob, name:el}
+                    // if(blob) return { blob:'data:image/jpeg;base64,'+blob.toString("base64"), name:el}
+                    return el
                     //   const data = fs.readFileSync(filePath);
                     //   const blob = Buffer.from(data.buffer);
                     //   return { blob:'data:image/jpeg;base64,'+blob.toString("base64"), name:el}
                   })
                   el.productImageInterior= el.productImageInterior.map(el=>{
-                    const filePath = path.resolve(
-                        __dirname,
-                        "..",
-                        "uploads",
-                        el
-                      );
-                      let data = null
-                      let blob=null
-                      try { 
-                          fs.accessSync(filePath, fs.constants.F_OK); 
-                          data = fs.readFileSync(filePath);
-                          blob = Buffer.from(data.buffer);
+                    // const filePath = path.resolve(
+                    //     __dirname,
+                    //     "..",
+                    //     "uploads",
+                    //     el
+                    //   );
+                    //   let data = null
+                    //   let blob=null
+                    //   try { 
+                    //       fs.accessSync(filePath, fs.constants.F_OK); 
+                    //       data = fs.readFileSync(filePath);
+                    //       blob = Buffer.from(data.buffer);
                       
   
-                        } catch (err) { 
-                          console.error('No Read access'); 
-                        } 
+                    //     } catch (err) { 
+                    //       console.error('No Read access'); 
+                    //     } 
                  
-                      if(blob)  return { blob:'data:image/jpeg;base64,'+blob.toString("base64"), name:el}
-                      return { blob, name:el}
+                    //   if(blob)  return { blob:'data:image/jpeg;base64,'+blob.toString("base64"), name:el}
+                      return el
                     //   const data = fs.readFileSync(filePath);
                     //   const blob = Buffer.from(data.buffer);
                     //   return { blob:'data:image/jpeg;base64,'+blob.toString("base64"), name:el}
                   })
                   el.productImageColored= el.productImageColored.map(el=>{
-                    const filePath = path.resolve(
-                        __dirname,
-                        "..",
-                        "uploads",
-                        el
-                      );
-                      let data = null
-                      let blob=null
-                      try { 
-                          fs.accessSync(filePath, fs.constants.F_OK); 
-                          data = fs.readFileSync(filePath);
-                          blob = Buffer.from(data.buffer);
+                    // const filePath = path.resolve(
+                    //     __dirname,
+                    //     "..",
+                    //     "uploads",
+                    //     el
+                    //   );
+                    //   let data = null
+                    //   let blob=null
+                    //   try { 
+                    //       fs.accessSync(filePath, fs.constants.F_OK); 
+                    //       data = fs.readFileSync(filePath);
+                    //       blob = Buffer.from(data.buffer);
                       
   
-                        } catch (err) { 
-                          console.error('No Read access'); 
-                        } 
+                    //     } catch (err) { 
+                    //       console.error('No Read access'); 
+                    //     } 
                     
-                      if(blob)  return { blob:'data:image/jpeg;base64,'+blob.toString("base64"), name:el}
-                      return { blob, name:el}
+                    //   if(blob)  return { blob:'data:image/jpeg;base64,'+blob.toString("base64"), name:el}
+                      return el
                     //   const data = fs.readFileSync(filePath);
                     //   const blob = Buffer.from(data.buffer);
                     //   return { blob:'data:image/jpeg;base64,'+blob.toString("base64"), name:el}
                   })
                   el.productDocuments= el.productDocuments.map(el=>{
-                    const filePath = path.resolve(
-                        __dirname,
-                        "..",
-                        "files",
-                        el
-                      );
-                      let data = null
-                      let blob=null
-                      try { 
-                        fs.accessSync(filePath, fs.constants.F_OK); 
-                        data = fs.readFileSync(filePath);
-                        blob = Buffer.from(data.buffer);
-                    
+                    // const filePath = path.resolve(
+                    //     __dirname,
+                    //     "..",
+                    //     "files",
+                    //     el
+                    //   );
+                    //   let data = null
+                    //   let blob=null
+                    //   try { 
+                    //     fs.accessSync(filePath, fs.constants.F_OK); 
+                    //     data = fs.readFileSync(filePath);
+                    //     blob = Buffer.from(data.buffer);
+                        
 
-                      } catch (err) { 
-                        console.error('No Read access'); 
-                      } 
-                      if(blob)  return { blob:'data:application/pdf;base64,'+blob.toString("base64"), name:el}
-                      return { blob, name:el}
+                    //   } catch (err) { 
+                    //     console.error('No Read access'); 
+                    //   } 
+                    //   if(blob)  return { blob:'data:application/pdf;base64,'+blob.toString("base64"), name:el}
+                      return{ blob:el}
 
                   })
                   el.productParamsImage=el.productParamsImage.map(el=>{
-                    const filePath = path.resolve(
-                      __dirname,
-                      "..",
-                      "uploads",
-                      el
-                    );
-                    let data = null
-                    let blob=null
-                    try { 
-                        fs.accessSync(filePath, fs.constants.F_OK); 
-                        data = fs.readFileSync(filePath);
-                        blob = Buffer.from(data.buffer);
+                    // const filePath = path.resolve(
+                    //   __dirname,
+                    //   "..",
+                    //   "uploads",
+                    //   el
+                    // );
+                    // let data = null
+                    // let blob=null
+                    // try { 
+                    //     fs.accessSync(filePath, fs.constants.F_OK); 
+                    //     data = fs.readFileSync(filePath);
+                    //     blob = Buffer.from(data.buffer);
                     
 
-                      } catch (err) { 
-                        console.error('No Read access'); 
-                      } 
+                    //   } catch (err) { 
+                    //     console.error('No Read access'); 
+                    //   } 
                   
-                    if(blob)  return { blob:'data:image/jpeg;base64,'+blob.toString("base64"), name:el}
-                    return { blob, name:el}
+                    // if(blob)  return { blob:'data:image/jpeg;base64,'+blob.toString("base64"), name:el}
+                    return el
                   })
                   return el
             })
