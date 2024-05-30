@@ -12,6 +12,7 @@ const Translit = require("cyrillic-to-translit-js");
 const CyrillicToTranslit = require("cyrillic-to-translit-js");
 const ProductService = require("../services/product-service");
 const ContactService = require("../services/contact-service");
+const HeaderFooterService = require("../services/header-footer-service");
 const cyrillicToTranslit = new CyrillicToTranslit();
 
 const storage = multer.diskStorage({
@@ -119,7 +120,8 @@ class AdminController {
   }
   async getAboutImages(req, res, next) {
     try {
-      const aboutData = await AboutService.getAllImages();
+      const aboutData = await AboutService.findAboutData();
+      console.log(aboutData);
       return res.json(aboutData);
     } catch (error) {
       return null;
@@ -381,6 +383,57 @@ async getContacts(req,res,next){
 }
 
 // CONCTACTS
+// header and footer
+async editHeaderAndFoorter(req,res,next){
+  try{
+    const headerFooterTextColor =JSON.parse(req.body.headerFooterTextColor);
+    console.log(req.files,'editHeaderAndFoorter');
+   
+    console.log(req.files,'editHeaderAndFoorter'
+    );
+    console.log(req.body,'editHeaderAndFoorter'
+  );
+    const data = await HeaderFooterService.getHeaderAndFooter();
+    if(headerFooterTextColor!='#fff'){
+      data.headerFooterTextColor=headerFooterTextColor;
+    }
+    if(req.files?.headerFooterImage){
+      const headerFooterImage =req.files?.headerFooterImage[0];
+        const filePath = path.resolve(
+          __dirname,
+          "..",
+          "uploads",
+          data.headerFooterImage
+        );
+
+      try {
+        fs.accessSync(filePath, fs.constants.F_OK); 
+        fs.unlinkSync(filePath);
+      } catch (e) {
+        console.log('Такого файла нет ' + filePath+' deleteProduct');
+      }
+      data.headerFooterImage=headerFooterImage.originalname;
+    }
+
+    await data.save();
+
+    res.json('Успешно')
+  }catch(e){
+    console.log(e,'editHeaderAndFoorter')
+    
+  }
+}
+
+async getHeaderAndFoorter(req,res,next){
+  try{
+    const data = await HeaderFooterService.getHeaderAndFooter();
+    res.json(data)
+  }catch(e){
+    console.log(e,'editHeaderAndFoorter')
+    
+  }
+}
+// header and footer
 }
 
 module.exports = new AdminController();

@@ -61,9 +61,9 @@ router.get('/categories/getallcategories', adminController.getAllCategories)
 // CATEGORIES 
 
 // PRODUCTS
-router.post('/products/addproduct',  upload.fields([{name:'mainImage', maxCount:1 },{name:'whiteBG'},{name:'interior'},{name:'colored'},{name:'files'},{name:'productParamsImage'}]), adminController.addProduct)
-router.delete('/products/deleteproduct/:id', adminController.deleteProduct)
-router.put('/products/editproduct/:id',upload.fields([{name:'mainImage', maxCount:1 },{name:'whiteBG'},{name:'interior'},{name:'colored'},{name:'files'},{name:'productParamsImage'}]), adminController.editProduct)
+router.post('/products/addproduct',authMiddleware,  upload.fields([{name:'mainImage', maxCount:1 },{name:'whiteBG'},{name:'interior'},{name:'colored'},{name:'files'},{name:'productParamsImage'}]), adminController.addProduct)
+router.delete('/products/deleteproduct/:id',authMiddleware, adminController.deleteProduct)
+router.put('/products/editproduct/:id',authMiddleware,upload.fields([{name:'mainImage', maxCount:1 },{name:'whiteBG'},{name:'interior'},{name:'colored'},{name:'files'},{name:'productParamsImage'}]), adminController.editProduct)
 router.get('/products/getallproducts', adminController.getAllProducts)
 // PRODUCTS
 
@@ -72,6 +72,11 @@ router.put('/contacts/editcontacts',authMiddleware,adminController.editContact)
 router.get('/contacts/getcontacts',adminController.getContacts)
 // CONTACTS
 
+// HEADER FOOTER 
+router.put('/headerfooter/adddata', authMiddleware,upload.fields([{name:'headerFooterImage'}]),adminController.editHeaderAndFoorter );
+router.get('/headerfooter/getdata',adminController.getHeaderAndFoorter) 
+
+// 
 router.get('/contacts/getsomething',(req,res,next)=>{
   res.json('12345678')
 })

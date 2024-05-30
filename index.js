@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(
   cors({
     // origin: ['http://localhost:5173',"http://26.73.174.17:5173",'http://192.168.0.177:5173','http://26.162.108.48:5000'],
-    origin: ['http://admin.fratelli.kz','http://localhost:5173'],
+    origin: ['http://admin.fratelli.kz','http://localhost:5173', 'https://fratelli.kz','https://www.fratelli.kz'],
     credentials: true,
   })
 );  
