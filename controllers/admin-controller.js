@@ -150,18 +150,19 @@ async addAboutData(req,res,next){
   try {
     const {image}=req.files;
     console.log(image);
-    const {aboutTitle,aboutText}=req.body;
+    const {aboutTitle,aboutText,aboutSliderText}=req.body;
     console.log(req.body);
     const aboutImagesToDelete=JSON.parse(req.body.aboutImagesToDelete);
     const aboutData = await AboutService.findAboutData();
     console.log(aboutData, 'aboutData');
     console.log(aboutImagesToDelete, 'aboutImagesToDelete');
-    console.log(aboutTitle,aboutText,'aboutTitle,aboutText');
+    console.log(aboutTitle,aboutText,aboutSliderText,'aboutTitle,aboutText');
     if(aboutImagesToDelete.length){
       await AboutService.deleteImage(aboutData,aboutImagesToDelete)
     } 
     aboutData.aboutTitle=aboutTitle;
     aboutData.aboutText=aboutText;
+    aboutData.aboutSliderText=aboutSliderText;
     if(image) aboutData.aboutImagePath.push(...image.map(el=>el.originalname));
 
    
@@ -387,6 +388,7 @@ async getContacts(req,res,next){
 async editHeaderAndFoorter(req,res,next){
   try{
     const headerFooterTextColor =JSON.parse(req.body.headerFooterTextColor);
+    const mediaColor = req.body.mediaColor
     console.log(req.files,'editHeaderAndFoorter');
    
     console.log(req.files,'editHeaderAndFoorter'
@@ -396,6 +398,9 @@ async editHeaderAndFoorter(req,res,next){
     const data = await HeaderFooterService.getHeaderAndFooter();
     if(headerFooterTextColor!='#fff'){
       data.headerFooterTextColor=headerFooterTextColor;
+    }
+    if(mediaColor){
+      data.mediaColor=mediaColor
     }
     if(req.files?.headerFooterImage){
       const headerFooterImage =req.files?.headerFooterImage[0];

@@ -5,7 +5,7 @@ const AboutUsSchema = new Schema({
     aboutText:{type:String, required:true},
     aboutTitle:{type:String, required:true},
     aboutImagePath:{type:Array},
-
+    aboutSliderText:{type:String,required:true}
 
 })
 
