@@ -92,7 +92,7 @@ class ProductService{
             const filePath = path.resolve(
               __dirname,
               "..",
-              "files",
+              "uploads",
               el
             );
             try {

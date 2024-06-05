@@ -15,7 +15,8 @@ const ProductSchema = new Schema({
     productDiscountPrice:{type:String},
     productDocuments:{type:Array},
     categoryNameId:{type:ObjectId},
-    productParamsImage:{type:Array}
+    productParamsImage:{type:Array},
+    coloredSliderText:{type:String}
 
 
 })

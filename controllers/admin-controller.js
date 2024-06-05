@@ -248,7 +248,7 @@ async addAboutData(req,res,next){
   async addProduct(req,res,next){
     try {
       console.log(1)
-        const {productName,productDescription,productParams,productRealPrice,productDiscountPrice,categoryNameId}=JSON.parse(req.body.productData);
+        const {productName,productDescription,productParams,productRealPrice,productDiscountPrice,categoryNameId,coloredSliderText}=JSON.parse(req.body.productData);
         const productPath= cyrillicToTranslit.transform(productName);
         console.log(req.files);
         const productImagesWhiteBG = req.files.whiteBG.map(el=>el.originalname)
@@ -257,7 +257,7 @@ async addAboutData(req,res,next){
         const productDocuments = req.files.files.map(el=>el.originalname);
         const productParamsImage = req.files.productParamsImage.map(el=>el.originalname);
         const productMainImage = [req.files.mainImage[0].originalname]
-        const product = await ProductService.addProduct({productPath,productImagesWhiteBG,productImageInterior,productImageColored, productDocuments,
+        const product = await ProductService.addProduct({coloredSliderText,productPath,productImagesWhiteBG,productImageInterior,productImageColored, productDocuments,
           productName,productDescription,productParams,productRealPrice,productDiscountPrice,categoryNameId, productMainImage,productParamsImage}
         )
         res.status(200).json({message:'Продукт добавлен'})
