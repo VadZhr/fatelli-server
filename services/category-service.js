@@ -8,7 +8,8 @@ class CategoryService{
             const categoryData = await CategoriesModel.create({
                 categoryName,
                 categoryImagePath,
-                categoryPath
+                categoryPath,
+                hidden:false
             })
             return categoryData
         } catch (e) {
@@ -40,7 +41,7 @@ class CategoryService{
                 if(blob){
                     blobArr.push({id:el._id, categoryName: el.categoryName, categoryImagePath:el.categoryImagePath, categoryPath:el.categoryPath, blob:'data:image/jpeg;base64,'+blob.toString("base64") });
                 }else{
-                    blobArr.push({id:el._id, categoryName: el.categoryName, categoryImagePath:el.categoryImagePath, categoryPath:el.categoryPath});
+                    blobArr.push({id:el._id, categoryName: el.categoryName, categoryImagePath:el.categoryImagePath, categoryPath:el.categoryPath,hidden:el.hidden});
                 }
                      
                   // это надо выучить

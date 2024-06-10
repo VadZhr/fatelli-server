@@ -16,7 +16,8 @@ const ProductSchema = new Schema({
     productDocuments:{type:Array},
     categoryNameId:{type:ObjectId},
     productParamsImage:{type:Array},
-    coloredSliderText:{type:String}
+    coloredSliderText:{type:String},
+    hidden:{type:Boolean}
 
 
 })

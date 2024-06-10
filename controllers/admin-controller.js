@@ -13,6 +13,7 @@ const CyrillicToTranslit = require("cyrillic-to-translit-js");
 const ProductService = require("../services/product-service");
 const ContactService = require("../services/contact-service");
 const HeaderFooterService = require("../services/header-footer-service");
+const { ObjectId } = require("mongodb");
 const cyrillicToTranslit = new CyrillicToTranslit();
 
 const storage = multer.diskStorage({
@@ -182,7 +183,7 @@ async addAboutData(req,res,next){
       const categoryData = await CategoryService.addCategory(
         data.categoryName,
         categoryPathEN,
-        categoryImagePath
+        categoryImagePath,
       );
       return res.json(categoryData);
     } catch (e) {
@@ -192,6 +193,13 @@ async addAboutData(req,res,next){
   async deleteCategory(req, res, next) {
     try {
       const { id } = req.params;
+      let productsWihtIdCategory =await ProductService.findAllProducts()
+      productsWihtIdCategory=productsWihtIdCategory.map(el=>{
+ 
+        return el
+      });
+      // console.log(productsWihtIdCategory,'productsWihtIdCategory');
+
       if (await CategoryService.delete(id)) {
         return res.json("Удалено");
       }
@@ -202,9 +210,10 @@ async addAboutData(req,res,next){
   }
   async editCategory(req, res, next) {
     try {
-      const { id, categoryName, changedImage } = JSON.parse(
+      const { id, categoryName, changedImage,hidden } = JSON.parse(
         req.body.categoryData
       );
+      console.log(req.body.categoryData,'req.body.categoryData' );
       const category = await CategoryService.findCategory(id);
       if (!category) {
         throw ApiError.BadRequest("Категория не найдена");
@@ -229,6 +238,7 @@ async addAboutData(req,res,next){
       const categoryPathEN = cyrillicToTranslit.transform(categoryName);
       category.categoryName =categoryName;
       category.categoryPath =categoryPathEN;
+      category.hidden =hidden
       await category.save()
       res.json('Успешно изменено')
     } catch (e) {
@@ -248,7 +258,7 @@ async addAboutData(req,res,next){
   async addProduct(req,res,next){
     try {
       console.log(1)
-        const {productName,productDescription,productParams,productRealPrice,productDiscountPrice,categoryNameId,coloredSliderText}=JSON.parse(req.body.productData);
+        const {productName,productDescription,productParams,productRealPrice,productDiscountPrice,categoryNameId,coloredSliderText,}=JSON.parse(req.body.productData);
         const productPath= cyrillicToTranslit.transform(productName);
         console.log(req.files);
         const productImagesWhiteBG = req.files.whiteBG.map(el=>el.originalname)

@@ -9,7 +9,8 @@ class ProductService{
         try {
         
             const product = await ProductModel.create({
-                ...productData
+                ...productData,
+                hidden:false
             })
             return product
         } catch (e) {
@@ -339,6 +340,14 @@ class ProductService{
         } catch (e) {
             console.log(e,'addProduct');
         }
+    }
+    async findAllProducts(){
+      try {
+        const products = await ProductModel.find();
+        return products
+      } catch (error) {
+        console.log(e,'findAllProducts');
+      }
     }
 }
 
